@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify OTP | PM Internship Matcher</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="center-page">
+    <div class="card auth-card">
+      <div class="headline">
+        <div class="logo-badge">✓</div>
+        <h1>Verify your email</h1>
+        <p id="emailHint">We've sent a 6-digit code to your email</p>
+      </div>
+
+      <div id="alertBox" class="alert alert-error"></div>
+
+      <form id="otpForm">
+        <div class="otp-input-row" id="otpRow">
+          <input type="text" maxlength="1" inputmode="numeric" class="otp-box" autofocus>
+          <input type="text" maxlength="1" inputmode="numeric" class="otp-box">
+          <input type="text" maxlength="1" inputmode="numeric" class="otp-box">
+          <input type="text" maxlength="1" inputmode="numeric" class="otp-box">
+          <input type="text" maxlength="1" inputmode="numeric" class="otp-box">
+          <input type="text" maxlength="1" inputmode="numeric" class="otp-box">
+        </div>
+        <button type="submit" class="btn btn-primary" id="verifyBtn">Verify &amp; Continue</button>
+      </form>
+
+      <p class="auth-footer">
+        Didn't get the code? <a href="#" id="resendLink">Resend OTP</a>
+      </p>
+      <p class="hint" style="text-align:center; color:var(--text-muted); font-size:12px;">
+        Tip: for local testing without SMTP configured, check the Spring Boot console log — the OTP is printed there.
+      </p>
+    </div>
+  </div>
+  <footer class="site-footer">PM Internship Scheme &mdash; AI Internship Recommendation Engine (Demo)</footer>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script>
+  const email = sessionStorage.getItem("pmim_pending_email");
+  const purpose = sessionStorage.getItem("pmim_otp_purpose") || "REGISTRATION";
+
+  if (!email) window.location.href = "register.html";
+  document.getElementById("emailHint").textContent = "We've sent a 6-digit code to " + email;
+
+  const boxes = Array.from(document.querySelectorAll(".otp-box"));
+  boxes.forEach((box, i) => {
+    box.addEventListener("input", () => {
+      box.value = box.value.replace(/[^0-9]/g, "");
+      if (box.value && i < boxes.length - 1) boxes[i + 1].focus();
+    });
+    box.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && !box.value && i > 0) boxes[i - 1].focus();
+    });
+    box.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const digits = (e.clipboardData.getData("text") || "").replace(/[^0-9]/g, "").split("");
+      digits.forEach((d, idx) => { if (boxes[idx]) boxes[idx].value = d; });
+      boxes[Math.min(digits.length, boxes.length - 1)].focus();
+    });
+  });
+
+  const alertBox = document.getElementById("alertBox");
+  function showAlert(msg, type = "error") {
+    alertBox.className = "alert alert-" + type + " show";
+    alertBox.textContent = msg;
+  }
+
+  document.getElementById("otpForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const otpCode = boxes.map(b => b.value).join("");
+    if (otpCode.length !== 6) { showAlert("Please enter the full 6-digit code"); return; }
+
+    const verifyBtn = document.getElementById("verifyBtn");
+    verifyBtn.disabled = true;
+    verifyBtn.textContent = "Verifying...";
+    try {
+      const res = await Api.verifyOtp({ email, otpCode, purpose });
+      TokenStore.saveAuth(res.data);
+      sessionStorage.removeItem("pmim_pending_email");
+      sessionStorage.removeItem("pmim_otp_purpose");
+      window.location.href = res.data.profileComplete ? "dashboard.html" : "profile.html";
+    } catch (err) {
+      showAlert(err.message);
+      verifyBtn.disabled = false;
+      verifyBtn.textContent = "Verify & Continue";
+    }
+  });
+
+  document.getElementById("resendLink").addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      await Api.resendOtp({ email, purpose });
+      showAlert("A new OTP has been sent to your email.", "success");
+    } catch (err) {
+      showAlert(err.message);
+    }
+  });
+</script>
+</body>
+</html>

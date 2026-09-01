@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | PM Internship Matcher</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="navbar-root"></div>
+
+  <div class="page">
+  <div class="dashboard-welcome">
+  <div>
+    <div class="welcome-badge">🇮🇳 PM INTERNSHIP SCHEME</div>
+
+    <h1 class="section-title" id="greeting">
+      Welcome back!
+    </h1>
+
+    <p class="section-sub">
+      Discover internships matched to your skills, interests and career goals.
+    </p>
+  </div>
+</div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="icon">🎯</div><div class="num" id="statMatches">–</div><div class="label">Recommended matches</div></div>
+      <div class="stat-card"><div class="icon">📄</div><div class="num" id="statApplied">–</div><div class="label">Applications submitted</div></div>
+      <div class="stat-card"><div class="icon">⭐</div><div class="num" id="statTopScore">–</div><div class="label">Best match score</div></div>
+      <div class="stat-card"><div class="icon">🧩</div><div class="num" id="statProfile">–</div><div class="label">Profile completeness</div></div>
+    </div>
+
+    <h2 class="section-title" style="font-size:17px;">Quick actions</h2>
+    <div class="quick-actions">
+      <div class="action-card" onclick="location.href='profile.html'">
+        <div class="icon">📝</div>
+        <h3>Complete your profile</h3>
+        <p>Add your skills, qualifications, interests and preferred locations.</p>
+      </div>
+      <div class="action-card" onclick="location.href='recommendations.html'">
+        <div class="icon">🤖</div>
+        <h3>View AI recommendations</h3>
+        <p>See internships ranked by suitability, just for you.</p>
+      </div>
+      <div class="action-card" onclick="location.href='browse.html'">
+        <div class="icon">🔎</div>
+        <h3>Browse all internships</h3>
+        <p>Search and filter every open opportunity under the scheme.</p>
+      </div>
+      <div class="action-card" onclick="location.href='applications.html'">
+        <div class="icon">📁</div>
+        <h3>Track your applications</h3>
+        <p>Check the status of internships you've applied to.</p>
+      </div>
+    </div>
+
+    <div id="incompleteBanner" style="display:none; margin-top:24px;" class="alert alert-info show">
+      Your profile isn't complete yet — add your skills, interests and preferred locations to unlock accurate AI-powered recommendations.
+      <a href="profile.html" style="font-weight:700; margin-left:6px;">Complete now →</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  requireAuthOrRedirect();
+  renderNav("dashboard");
+  document.getElementById("greeting").textContent = "Welcome back, " + (TokenStore.fullName || "Student") + "!";
+
+  async function loadStats() {
+    try {
+      const [profileRes, recRes, appsRes] = await Promise.all([
+        Api.getMyProfile(),
+        Api.getRecommendations(50),
+        Api.myApplications()
+      ]);
+
+      const profile = profileRes.data;
+      const recs = recRes.data || [];
+      const apps = appsRes.data || [];
+
+      document.getElementById("statMatches").textContent = recs.length;
+      document.getElementById("statApplied").textContent = apps.length;
+      document.getElementById("statTopScore").textContent = recs.length ? Math.round(recs[0].overallMatchScore) + "%" : "–";
+      document.getElementById("statProfile").textContent = profile.profileComplete ? "Complete" : "Incomplete";
+
+      if (!profile.profileComplete) {
+        document.getElementById("incompleteBanner").style.display = "block";
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  loadStats();
+</script>
+</body>
+</html>

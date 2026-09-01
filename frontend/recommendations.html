@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendations | PM Internship Matcher</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="navbar-root"></div>
+
+  <div class="page">
+    <div class="recommendation-hero">
+  <div class="ai-badge">🤖 AI-POWERED MATCHING</div>
+
+  <h1>Your Personalized Internship Matches</h1>
+
+  <p>
+    Smart recommendations based on your skills, interests,
+    qualifications, career goals and preferred locations.
+  </p>
+
+  <div class="hero-features">
+    <span>🎯 Skill Match</span>
+    <span>💼 Career Fit</span>
+    <span>📍 Location</span>
+    <span>✨ Personalized</span>
+  </div>
+</div>
+
+    <div id="content"></div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  requireAuthOrRedirect();
+  renderNav("recommendations");
+
+  const content = document.getElementById("content");
+
+  function scoreColor(score) {
+    if (score >= 75) return "#128a45";
+    if (score >= 50) return "#ff7a1a";
+    return "#d93025";
+  }
+
+  function renderCard(rec) {
+    const color = scoreColor(rec.overallMatchScore);
+    const deadline = rec.applicationDeadline ? new Date(rec.applicationDeadline).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "Not specified";
+
+    return `
+      <div class="rec-card">
+        <div class="rec-top">
+          <div>
+            <h3 class="rec-title">${rec.title}</h3>
+            <p class="rec-company">${rec.companyName} &middot; ${rec.sector || "General"}</p>
+            <div class="tag-row">
+              <span class="tag location">📍 ${rec.location || "Not specified"}</span>
+              <span class="tag mode">${rec.workMode || "ONSITE"}</span>
+              ${rec.stipendPerMonth ? `<span class="tag money">₹${rec.stipendPerMonth.toLocaleString("en-IN")}/mo</span>` : ""}
+              <span class="tag">⏱ ${rec.duration || "-"}</span>
+            </div>
+          </div>
+          <div class="score-badge" style="--score:${rec.overallMatchScore}; --score-color:${color};" data-score="${Math.round(rec.overallMatchScore)}"></div>
+        </div>
+
+        <div class="breakdown">
+          ${miniBar("Skills", rec.skillMatchScore)}
+          ${miniBar("Interests", rec.interestMatchScore)}
+          ${miniBar("Location", rec.locationMatchScore)}
+          ${miniBar("Qualification", rec.qualificationMatchScore)}
+        </div>
+
+        ${rec.matchedSkills && rec.matchedSkills.length ? `<div class="skills-line"><span class="matched">✓ Matched skills:</span> ${rec.matchedSkills.join(", ")}</div>` : ""}
+        ${rec.missingSkills && rec.missingSkills.length ? `<div class="skills-line"><span class="missing">✗ Skills to build:</span> ${rec.missingSkills.join(", ")}</div>` : ""}
+
+        <div class="explanation">💡 ${rec.matchExplanation}</div>
+        <p style="font-size:12.5px; color:var(--text-muted); margin:8px 0 0;">Application deadline: ${deadline}</p>
+
+        <div class="rec-actions">
+          <button class="btn btn-primary btn-sm" onclick="applyTo(${rec.internshipId}, this)">Apply Now</button>
+          <a class="btn btn-outline btn-sm" href="browse.html">View more like this</a>
+        </div>
+      </div>`;
+  }
+
+  function miniBar(label, value) {
+    return `<div>
+      <div class="mini-bar-label"><span>${label}</span><span>${Math.round(value)}%</span></div>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${value}%;"></div></div>
+    </div>`;
+  }
+
+  async function applyTo(internshipId, btn) {
+    btn.disabled = true;
+    btn.textContent = "Applying...";
+    try {
+      await Api.applyToInternship(internshipId);
+      btn.textContent = "✓ Applied";
+      btn.classList.remove("btn-primary");
+      btn.classList.add("btn-outline");
+    } catch (err) {
+      alert(err.message);
+      btn.disabled = false;
+      btn.textContent = "Apply Now";
+    }
+  }
+
+  async function load() {
+    content.innerHTML = `<div class="loader"><div class="spinner"></div> Generating your personalized recommendations...</div>`;
+    try {
+      const profileRes = await Api.getMyProfile();
+      if (!profileRes.data.profileComplete) {
+        content.innerHTML = `
+          <div class="empty-state card">
+            <div class="icon">🧩</div>
+            <h3>Complete your profile first</h3>
+            <p>We need your skills, interests and preferred locations to generate accurate matches.</p>
+            <a href="profile.html" class="btn btn-primary" style="width:auto; margin-top:14px;">Complete Profile</a>
+          </div>`;
+        return;
+      }
+
+      const res = await Api.getRecommendations(30);
+      const recs = res.data || [];
+
+      if (!recs.length) {
+        content.innerHTML = `<div class="empty-state card"><div class="icon">😕</div><h3>No internships available right now</h3><p>Check back soon, or browse all listings.</p></div>`;
+        return;
+      }
+
+      content.innerHTML = recs.map(renderCard).join("");
+    } catch (err) {
+      content.innerHTML = `<div class="alert alert-error show">${err.message}</div>`;
+    }
+  }
+  load();
+</script>
+</body>
+</html>

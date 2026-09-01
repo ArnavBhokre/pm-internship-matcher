@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browse Internships | PM Internship Matcher</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div id="navbar-root"></div>
+
+  <div class="page">
+    <h1 class="section-title">Browse all internships</h1>
+    <p class="section-sub">Search and filter every open opportunity under the PM Internship Scheme.</p>
+
+    <div class="filter-bar card" style="padding:16px 20px;">
+      <input type="text" id="keywordInput" placeholder="Search by title or company...">
+      <input type="text" id="locationInput" placeholder="Location (e.g. Delhi)">
+      <select id="sectorInput">
+        <option value="">All sectors</option>
+        <option value="IT">IT</option>
+        <option value="Government">Government</option>
+        <option value="Finance">Finance</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Media">Media</option>
+      </select>
+      <button class="btn btn-primary btn-sm" id="searchBtn">Search</button>
+      <button class="btn btn-outline btn-sm" id="clearBtn">Clear</button>
+    </div>
+
+    <div id="content"></div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/browse.js"></script>
+</body>
+</html>

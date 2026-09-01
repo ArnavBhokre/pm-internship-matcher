@@ -1,0 +1,339 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Applications | PM Internship Matcher</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+  <div id="navbar-root"></div>
+
+  <div class="page">
+
+    <h1 class="section-title">My applications</h1>
+
+    <p class="section-sub">
+      Track the status of every internship you've applied to, sorted by match score.
+    </p>
+
+    <div id="content"></div>
+
+  </div>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+
+<script>
+
+  requireAuthOrRedirect();
+  renderNav("applications");
+
+  const content = document.getElementById("content");
+
+
+  // ============================================================
+  // RENDER APPLICATION CARD
+  // ============================================================
+
+  function renderRow(app) {
+
+    const i = app.internship;
+
+    const applied = app.createdAt
+      ? new Date(app.createdAt).toLocaleDateString(
+          "en-IN",
+          {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+          }
+        )
+      : "-";
+
+
+    const score = app.matchScore || 0;
+
+    const scoreColor =
+      score >= 75
+        ? "#128a45"
+        : score >= 50
+          ? "#ff7a1a"
+          : "#d93025";
+
+
+    // ------------------------------------------------------------
+    // WITHDRAWN APPLICATION
+    // ------------------------------------------------------------
+
+    const isWithdrawn = app.status === "WITHDRAWN";
+
+
+    const actionButton = isWithdrawn
+
+      ? `
+        <button
+          class="btn btn-outline btn-sm"
+          disabled
+          style="opacity:0.6; cursor:not-allowed;">
+          ✓ Withdrawn
+        </button>
+        `
+
+      : `
+        <button
+          class="btn btn-outline btn-sm"
+          onclick="withdrawApplication(${app.id}, this)">
+          🗑 Withdraw Application
+        </button>
+        `;
+
+
+    return `
+
+      <div class="rec-card">
+
+        <div class="rec-top">
+
+          <div>
+
+            <h3 class="rec-title">
+              ${i.title}
+            </h3>
+
+            <p class="rec-company">
+              ${i.companyName || "Company not specified"}
+              &middot;
+              ${i.sector || "General"}
+            </p>
+
+
+            <div class="tag-row">
+
+              <span class="tag location">
+                📍 ${i.location || "Not specified"}
+              </span>
+
+              <span class="tag mode">
+                ${i.workMode || "ONSITE"}
+              </span>
+
+              <span class="status-pill status-${app.status}">
+                ${app.status}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="score-badge"
+            style="
+              --score:${score};
+              --score-color:${scoreColor};
+            "
+            data-score="${Math.round(score)}">
+          </div>
+
+        </div>
+
+
+        <p
+          style="
+            font-size:12.5px;
+            color:var(--text-muted);
+            margin:10px 0 0;
+          ">
+          Applied on ${applied}
+        </p>
+
+
+        <div
+          class="rec-actions"
+          style="margin-top:16px;">
+
+          ${actionButton}
+
+        </div>
+
+      </div>
+
+    `;
+  }
+
+
+  // ============================================================
+  // WITHDRAW APPLICATION
+  // ============================================================
+
+  async function withdrawApplication(applicationId, button) {
+
+    const confirmed = confirm(
+      "Are you sure you want to withdraw this application?"
+    );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent = "Withdrawing...";
+
+
+    try {
+
+      const response = await fetch(
+        `${API_BASE_URL}/applications/${applicationId}/withdraw`,
+        {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+
+            "Authorization":
+              "Bearer " + TokenStore.token
+          }
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.message ||
+          "Unable to withdraw application"
+        );
+
+      }
+
+
+      // Reload applications after successful withdrawal
+
+      await load();
+
+
+    } catch (err) {
+
+      alert(err.message);
+
+      button.disabled = false;
+
+      button.textContent = "🗑 Withdraw Application";
+
+    }
+
+  }
+
+
+  // ============================================================
+  // LOAD APPLICATIONS
+  // ============================================================
+
+  async function load() {
+
+    content.innerHTML = `
+
+      <div class="loader">
+
+        <div class="spinner"></div>
+
+        Loading your applications...
+
+      </div>
+
+    `;
+
+
+    try {
+
+      const res = await Api.myApplications();
+
+      const apps = res.data || [];
+
+
+      if (!apps.length) {
+
+        content.innerHTML = `
+
+          <div class="empty-state card">
+
+            <div class="icon">
+              📁
+            </div>
+
+            <h3>
+              No applications yet
+            </h3>
+
+            <p>
+              Browse your recommendations and apply to internships that fit you.
+            </p>
+
+            <a
+              href="recommendations.html"
+              class="btn btn-primary"
+              style="
+                width:auto;
+                margin-top:14px;
+              ">
+
+              View Recommendations
+
+            </a>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      content.innerHTML =
+        apps.map(renderRow).join("");
+
+
+    } catch (err) {
+
+      content.innerHTML = `
+
+        <div class="alert alert-error show">
+
+          ${err.message}
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  // ============================================================
+  // INITIAL LOAD
+  // ============================================================
+
+  load();
+
+</script>
+
+</body>
+</html>
+```
