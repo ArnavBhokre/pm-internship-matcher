@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PM Internship Matcher — Complete Project Guide</title>
+    <style>
+        @page {
+            margin: 20mm 18mm;
+            size: A4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1a1a2e;
+            line-height: 1.65;
+            font-size: 11.5pt;
+            background: #fff;
+            padding: 0;
+        }
+
+        /* Cover Section */
+        .cover {
+            text-align: center;
+            padding: 60px 30px 40px;
+            border-bottom: 3px solid #4361ee;
+            margin-bottom: 30px;
+        }
+        .cover h1 {
+            font-size: 28pt;
+            color: #4361ee;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .cover .subtitle {
+            font-size: 14pt;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .cover .meta {
+            font-size: 10pt;
+            color: #888;
+        }
+        .cover .badge {
+            display: inline-block;
+            background: #4361ee;
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 10pt;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 28px;
+            page-break-inside: avoid;
+        }
+        h2 {
+            font-size: 16pt;
+            color: #4361ee;
+            border-bottom: 2px solid #e0e7ff;
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+        }
+        h3 {
+            font-size: 12.5pt;
+            color: #2d3748;
+            margin-bottom: 8px;
+            margin-top: 16px;
+        }
+        p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        ul, ol {
+            margin: 8px 0 12px 22px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 16px;
+            font-size: 10.5pt;
+        }
+        th {
+            background: #4361ee;
+            color: #fff;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 9.5pt;
+            margin: 10px 0 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+        .code-label {
+            display: inline-block;
+            background: #334155;
+            color: #94a3b8;
+            font-size: 8pt;
+            padding: 2px 10px;
+            border-radius: 4px 4px 0 0;
+            font-family: 'Consolas', monospace;
+            margin-bottom: -2px;
+        }
+
+        /* Info boxes */
+        .info-box {
+            border-left: 4px solid #4361ee;
+            background: #eef2ff;
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin: 12px 0;
+            font-size: 10.5pt;
+        }
+        .info-box.success {
+            border-left-color: #10b981;
+            background: #ecfdf5;
+        }
+        .info-box.warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        /* Architecture diagram (text-based) */
+        .arch-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: 'Consolas', monospace;
+            font-size: 9pt;
+            line-height: 1.6;
+            margin: 12px 0;
+            white-space: pre;
+            text-align: center;
+        }
+
+        /* Feature cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .feature-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .feature-card h4 {
+            color: #4361ee;
+            font-size: 10.5pt;
+            margin-bottom: 4px;
+        }
+        .feature-card p {
+            font-size: 9.5pt;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 9pt;
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Page breaks */
+        .page-break {
+            page-break-before: always;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4361ee;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 9pt;
+            font-weight: 600;
+            margin: 2px 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- COVER -->
+    <div class="cover">
+        <h1>PM Internship Matcher</h1>
+        <div class="subtitle">AI-Powered Internship Recommendation & Application Platform</div>
+        <div class="meta">
+            <strong>Developer:</strong> Arnav Bhokre &nbsp;|&nbsp;
+            <strong>Date:</strong> November 2026
+        </div>
+        <div style="margin-top: 15px;">
+            <span class="tech-badge">Spring Boot 3.3</span>
+            <span class="tech-badge">Java 17</span>
+            <span class="tech-badge">MySQL 8.0</span>
+            <span class="tech-badge">HTML/CSS/JS</span>
+            <span class="tech-badge">TF-IDF AI</span>
+            <span class="tech-badge">REST API</span>
+        </div>
+        <div class="badge">✅ Complete & Functional</div>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="section">
+        <h2>📑 Table of Contents</h2>
+        <ol style="font-size: 11pt;">
+            <li>Project Overview</li>
+            <li>System Architecture</li>
+            <li>AI Recommendation Engine</li>
+            <li>Features Overview</li>
+            <li>Internship Database Coverage</li>
+            <li>Email Notification System</li>
+            <li>Tech Stack & Dependencies</li>
+            <li>Project Structure</li>
+            <li>How to Run the Project</li>
+            <li>API Endpoints</li>
+            <li>Key Files Reference</li>
+            <li>Database Schema</li>
+        </ol>
+    </div>
+
+    <!-- 1. PROJECT OVERVIEW -->
+    <div class="section page-break">
+        <h2>1. Project Overview</h2>
+        <p>
+            <strong>PM Internship Matcher</strong> is a full-stack web application that uses <strong>Artificial Intelligence</strong>
+            to match students with the most relevant internship opportunities based on their education, skills, interests,
+            and career goals. The platform covers <strong>100+ internships</strong> across <strong>all major education fields</strong>
+            in India and sends <strong>automated confirmation emails</strong> when students apply.
+        </p>
+
+        <h3>Key Objectives</h3>
+        <ul>
+            <li>Provide AI-driven personalized internship recommendations using NLP (TF-IDF) and multi-factor scoring</li>
+            <li>Cover internships across every major educational discipline — from Engineering to Veterinary Sciences</li>
+            <li>Automate the application process with professional email confirmations</li>
+            <li>Offer a clean, responsive web interface for browsing, filtering, and applying to internships</li>
+        </ul>
+    </div>
+
+    <!-- 2. SYSTEM ARCHITECTURE -->
+    <div class="section">
+        <h2>2. System Architecture</h2>
+        <div class="arch-box">
+┌──────────────────────────────────┐
+│        FRONTEND (Port 5500)      │
+│   HTML / CSS / Vanilla JS        │
+│   Pages: Login, Register,        │
+│   Dashboard, Profile, Browse,    │
+│   Recommendations                │
+└───────────────┬──────────────────┘
+                │ REST API (JSON)
+                ▼
+┌──────────────────────────────────┐
+│       BACKEND (Port 8080)        │
+│      Spring Boot 3.3.2           │
+│                                  │
+│  ┌────────────┐ ┌──────────────┐ │
+│  │ Controllers│ │ Security     │ │
+│  │  (REST)    │ │ (JWT + CORS) │ │
+│  └─────┬──────┘ └──────────────┘ │
+│        ▼                         │
+│  ┌────────────┐ ┌──────────────┐ │
+│  │  Services  │ │ AI Engine    │ │
+│  │            │ │ (TF-IDF +    │ │
+│  │            │ │  Cosine Sim) │ │
+│  └─────┬──────┘ └──────────────┘ │
+│        ▼                         │
+│  ┌────────────┐ ┌──────────────┐ │
+│  │    JPA     │ │ Mail Service │ │
+│  │ Hibernate  │ │ (Gmail SMTP) │ │
+│  └─────┬──────┘ └──────────────┘ │
+└────────┼─────────────────────────┘
+         ▼
+┌──────────────────────────────────┐
+│      MySQL 8.0 (Port 3306)       │
+│   Database: internship           │
+│   Tables: students, internships, │
+│   applications, skills, etc.     │
+└──────────────────────────────────┘
+        </div>
+    </div>
+
+    <!-- 3. AI RECOMMENDATION ENGINE -->
+    <div class="section page-break">
+        <h2>3. AI Recommendation Engine</h2>
+        <p>
+            The recommendation engine uses a <strong>hybrid AI approach</strong> combining Natural Language Processing (NLP)
+            with domain-specific heuristics. It is implemented in <code>RecommendationEngine.java</code>.
+        </p>
+
+        <h3>3.1 TF-IDF Cosine Similarity (NLP)</h3>
+        <p>
+            The engine builds <strong>Term Frequency–Inverse Document Frequency (TF-IDF)</strong> vectors from both
+            the student's profile text (bio, skills, interests, career goals) and each internship's description.
+            It then computes the <strong>cosine similarity</strong> between these vectors to measure semantic alignment.
+        </p>
+        <div class="info-box">
+            <strong>How it works:</strong><br>
+            1. Tokenize and normalize student profile and internship descriptions<br>
+            2. Build a vocabulary from the combined corpus<br>
+            3. Compute TF (term frequency) for each document<br>
+            4. Compute IDF (inverse document frequency) across all documents<br>
+            5. Multiply TF × IDF to get weighted vectors<br>
+            6. Calculate cosine similarity = (A · B) / (|A| × |B|)
+        </div>
+
+        <h3>3.2 Field-of-Study Matching</h3>
+        <p>
+            Maps <strong>35+ academic fields</strong> to relevant industry sectors. For example, a student studying
+            "Computer Science" is matched to sectors like IT, Software, Data Science, and AI. A student studying
+            "Pharmacy" is matched to Pharmaceutical, Healthcare, and Biotech sectors.
+        </p>
+
+        <h3>3.3 Multi-Factor Weighted Scoring</h3>
+        <p>
+            The final recommendation score is a weighted combination of <strong>7 factors</strong>:
+        </p>
+        <table>
+            <tr>
+                <th>Factor</th>
+                <th>Weight</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Skill Match</td>
+                <td>25%</td>
+                <td>Importance-weighted skill overlap considering student proficiency levels (Beginner to Expert)</td>
+            </tr>
+            <tr>
+                <td>TF-IDF Content Similarity</td>
+                <td>25%</td>
+                <td>NLP-based semantic similarity between student profile and internship description</td>
+            </tr>
+            <tr>
+                <td>Field of Study</td>
+                <td>20%</td>
+                <td>Academic field-to-sector relevance mapping (35+ fields)</td>
+            </tr>
+            <tr>
+                <td>Qualification Match</td>
+                <td>12%</td>
+                <td>Student's degree level vs. internship's minimum qualification requirement</td>
+            </tr>
+            <tr>
+                <td>Location Preference</td>
+                <td>10%</td>
+                <td>Match between student's preferred locations and internship location</td>
+            </tr>
+            <tr>
+                <td>Work Mode</td>
+                <td>5%</td>
+                <td>Remote / Onsite / Hybrid preference alignment</td>
+            </tr>
+            <tr>
+                <td>Career Goals</td>
+                <td>3%</td>
+                <td>Keyword overlap between career goals text and internship role/sector</td>
+            </tr>
+        </table>
+
+        <h3>3.4 Human-Readable Explanations</h3>
+        <p>
+            Every recommendation includes a generated explanation string (e.g., <em>"Strong skill match (85%) •
+            Your Computer Science background aligns well with the IT sector • High content similarity (72%)"</em>),
+            making the AI reasoning transparent to the user.
+        </p>
+    </div>
+
+    <!-- 4. FEATURES OVERVIEW -->
+    <div class="section page-break">
+        <h2>4. Features Overview</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔐 Authentication & Security</h4>
+                <p>JWT-based authentication with login, registration, and forgot password (OTP via email). Passwords hashed with BCrypt.</p>
+            </div>
+            <div class="feature-card">
+                <h4>👤 Student Profile Management</h4>
+                <p>Complete profile with field of study, qualification, skills with proficiency, interests, preferred locations, work mode, and career goals.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🤖 AI Recommendations</h4>
+                <p>TF-IDF + cosine similarity engine with 7-factor scoring. Shows match percentage, field-of-study alignment, and content similarity bars.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔍 Browse & Filter</h4>
+                <p>Browse all 100+ internships with filtering by sector, location, work mode, and search. Paginated results with detailed cards.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📝 One-Click Apply</h4>
+                <p>Apply to internships directly from recommendation or browse pages. Duplicate application prevention built-in.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📧 Email Notifications</h4>
+                <p>Professional HTML confirmation email sent asynchronously on application. OTP emails for password reset.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📊 Dashboard</h4>
+                <p>Overview of applied internships, application status tracking, and profile completion indicator.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🌐 Responsive UI</h4>
+                <p>Clean, modern vanilla HTML/CSS/JS frontend with mobile-responsive design. No heavy frameworks needed.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. INTERNSHIP DATABASE -->
+    <div class="section">
+        <h2>5. Internship Database Coverage</h2>
+        <p>
+            The platform seeds <strong>100+ internships</strong> covering <strong>all major education fields</strong> in India:
+        </p>
+        <table>
+            <tr><th>Category</th><th>Fields Covered</th><th>Count</th></tr>
+            <tr><td>Computer Science & IT</td><td>Software Dev, Web Dev, Mobile Apps, Cloud, DevOps, Cybersecurity, AI/ML, Data Science</td><td>15+</td></tr>
+            <tr><td>Electronics & Electrical</td><td>Embedded Systems, IoT, VLSI, Power Systems, Robotics</td><td>6+</td></tr>
+            <tr><td>Mechanical & Civil Engineering</td><td>CAD/CAM, Structural Engineering, Construction, Automotive</td><td>6+</td></tr>
+            <tr><td>Chemical Engineering</td><td>Process Engineering, Petrochemical, Materials Science</td><td>4+</td></tr>
+            <tr><td>Sciences</td><td>Physics Research, Chemistry R&D, Biology, Environmental Science, Mathematics</td><td>8+</td></tr>
+            <tr><td>Commerce & Finance</td><td>Investment Banking, Financial Analysis, Accounting, FinTech, Taxation</td><td>8+</td></tr>
+            <tr><td>Marketing & Sales</td><td>Digital Marketing, Brand Management, SEO/SEM, Market Research, Social Media</td><td>6+</td></tr>
+            <tr><td>Arts & Humanities</td><td>Content Writing, Psychology Research, Sociology, History, Political Science</td><td>6+</td></tr>
+            <tr><td>Law & Legal</td><td>Legal Research, Corporate Law, Intellectual Property, Public Policy</td><td>5+</td></tr>
+            <tr><td>Healthcare & Medicine</td><td>Clinical Research, Public Health, Hospital Administration, Medical Writing</td><td>5+</td></tr>
+            <tr><td>Pharmacy & Biotech</td><td>Drug Research, Pharmacovigilance, Regulatory Affairs, Bioinformatics</td><td>5+</td></tr>
+            <tr><td>Agriculture</td><td>Agricultural Research, AgriTech, Food Science, Dairy Technology</td><td>4+</td></tr>
+            <tr><td>Design</td><td>UI/UX Design, Graphic Design, Fashion Design, Interior Design</td><td>5+</td></tr>
+            <tr><td>Architecture</td><td>Sustainable Architecture, Urban Planning, Landscape Design</td><td>3+</td></tr>
+            <tr><td>Education</td><td>EdTech, Teaching Assistantship, Curriculum Design, E-Learning</td><td>4+</td></tr>
+            <tr><td>Media & Journalism</td><td>Content Creation, Video Production, Public Relations, Broadcasting</td><td>4+</td></tr>
+            <tr><td>Hospitality & Tourism</td><td>Hotel Management, Event Management, Tourism Planning</td><td>3+</td></tr>
+            <tr><td>Veterinary Sciences</td><td>Animal Health Research, Dairy Science, Wildlife Conservation</td><td>3+</td></tr>
+            <tr><td>Supply Chain & Operations</td><td>Logistics, Operations Management, Procurement, Warehouse Analytics</td><td>3+</td></tr>
+        </table>
+        <p>All internships include details like company name, description, location, work mode, stipend, duration, required skills, and application deadlines.</p>
+    </div>
+
+    <!-- 6. EMAIL SYSTEM -->
+    <div class="section page-break">
+        <h2>6. Email Notification System</h2>
+        <p>
+            The platform uses <strong>Gmail SMTP</strong> with App Passwords for sending transactional emails.
+            Emails are sent <strong>asynchronously</strong> using Spring's <code>@Async</code> annotation so they don't
+            block the API response.
+        </p>
+
+        <h3>6.1 Application Confirmation Email</h3>
+        <p>When a student applies to an internship, they receive a professional HTML email containing:</p>
+        <ul>
+            <li><strong>Internship Details</strong> — Title, company, location, work mode, stipend, deadline</li>
+            <li><strong>AI Match Score</strong> — Color-coded badge (green ≥75%, orange ≥50%, red &lt;50%)</li>
+            <li><strong>Next Steps</strong> — Checklist of what to expect after applying</li>
+            <li><strong>Company Info</strong> — Brief about the hiring company</li>
+        </ul>
+
+        <h3>6.2 OTP Email (Password Reset)</h3>
+        <p>When a user requests a password reset, a 6-digit OTP is sent to their registered email address. OTPs expire after a configured time period.</p>
+
+        <div class="info-box success">
+            <strong>SMTP Configuration:</strong> Gmail SMTP (smtp.gmail.com:587) with TLS encryption and App Password authentication.
+        </div>
+    </div>
+
+    <!-- 7. TECH STACK -->
+    <div class="section">
+        <h2>7. Tech Stack & Dependencies</h2>
+        <table>
+            <tr><th>Layer</th><th>Technology</th><th>Version</th></tr>
+            <tr><td>Backend Framework</td><td>Spring Boot</td><td>3.3.2</td></tr>
+            <tr><td>Language</td><td>Java</td><td>17 (runs on 21)</td></tr>
+            <tr><td>Database</td><td>MySQL</td><td>8.0</td></tr>
+            <tr><td>ORM</td><td>Hibernate / Spring Data JPA</td><td>6.x</td></tr>
+            <tr><td>Security</td><td>Spring Security + JWT</td><td>6.x</td></tr>
+            <tr><td>Email</td><td>Spring Boot Mail (Jakarta Mail)</td><td>3.x</td></tr>
+            <tr><td>Build Tool</td><td>Apache Maven</td><td>3.9.16</td></tr>
+            <tr><td>Frontend</td><td>Vanilla HTML / CSS / JavaScript</td><td>ES6+</td></tr>
+            <tr><td>AI/NLP</td><td>Custom TF-IDF Engine (Java)</td><td>—</td></tr>
+            <tr><td>API Format</td><td>RESTful JSON</td><td>—</td></tr>
+        </table>
+    </div>
+
+    <!-- 8. PROJECT STRUCTURE -->
+    <div class="section page-break">
+        <h2>8. Project Structure</h2>
+        <div class="code-block">pm-internship-matcher/
+├── backend/
+│   ├── src/main/java/com/internship/matcher/
+│   │   ├── MatcherApplication.java          # Main entry point (@EnableAsync)
+│   │   ├── config/
+│   │   │   ├── SecurityConfig.java          # JWT + CORS security config
+│   │   │   └── CorsConfig.java              # Cross-origin configuration
+│   │   ├── controller/
+│   │   │   ├── AuthController.java          # Login, Register, Forgot Password
+│   │   │   ├── StudentController.java       # Profile management
+│   │   │   ├── InternshipController.java    # Browse internships
+│   │   │   ├── ApplicationController.java   # Apply to internships
+│   │   │   └── RecommendationController.java# AI recommendations endpoint
+│   │   ├── service/
+│   │   │   ├── RecommendationEngine.java    # ★ AI Engine (TF-IDF + Scoring)
+│   │   │   ├── ApplicationService.java      # Application logic + email trigger
+│   │   │   ├── MailService.java             # Email templates & sending
+│   │   │   ├── AuthService.java             # Auth & JWT logic
+│   │   │   └── StudentService.java          # Student CRUD operations
+│   │   ├── model/
+│   │   │   ├── Student.java                 # Student entity
+│   │   │   ├── Internship.java              # Internship entity
+│   │   │   └── Application.java             # Application entity
+│   │   ├── dto/
+│   │   │   ├── request/                     # Request DTOs
+│   │   │   └── response/
+│   │   │       └── RecommendationResponse.java # AI recommendation DTO
+│   │   └── repository/                      # JPA repositories
+│   └── src/main/resources/
+│       └── application.properties           # DB, SMTP, JWT config
+├── frontend/
+│   ├── index.html                           # Login page
+│   ├── register.html                        # Registration page
+│   ├── dashboard.html                       # Student dashboard
+│   ├── profile.html                         # Profile management
+│   ├── browse.html                          # Browse all internships
+│   ├── recommendations.html                 # AI recommendations page
+│   ├── forgot-password.html                 # Password reset
+│   ├── css/style.css                        # Global styles
+│   └── js/
+│       ├── api.js                           # API client utilities
+│       ├── config.js                        # API base URL config
+│       ├── nav.js                           # Navigation component
+│       └── profile.js                       # Profile page logic
+├── database/
+│   └── seed_data.sql                        # 100+ internships seed data
+└── apache-maven-3.9.16/                     # Bundled Maven</div>
+    </div>
+
+    <!-- 9. HOW TO RUN -->
+    <div class="section">
+        <h2>9. How to Run the Project</h2>
+
+        <h3>Prerequisites</h3>
+        <ul>
+            <li><strong>Java 17+</strong> (JDK installed and in PATH)</li>
+            <li><strong>MySQL 8.0</strong> running on localhost:3306</li>
+            <li>Database named <code>internship</code> created in MySQL</li>
+            <li>No additional installations needed — Maven is bundled with the project</li>
+        </ul>
+
+        <h3>Step 1: Create the Database (first time only)</h3>
+        <div class="code-label">PowerShell</div>
+        <div class="code-block">& "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -proot -e "CREATE DATABASE IF NOT EXISTS internship;"</div>
+
+        <h3>Step 2: Start the Backend Server</h3>
+        <div class="code-label">PowerShell</div>
+        <div class="code-block">cd d:\Arnav\project\pm-internship-matcher\backend
+d:\Arnav\project\pm-internship-matcher\apache-maven-3.9.16\bin\mvn.cmd spring-boot:run</div>
+        <div class="info-box">
+            Wait until you see: <strong>"Started MatcherApplication in X seconds"</strong><br>
+            Backend will be running on <strong>http://localhost:8080</strong>
+        </div>
+
+        <h3>Step 3: Seed the Database (first time only)</h3>
+        <p>Open a <strong>new terminal</strong> and run:</p>
+        <div class="code-label">PowerShell</div>
+        <div class="code-block">Get-Content "d:\Arnav\project\pm-internship-matcher\database\seed_data.sql" -Raw | & "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -proot internship</div>
+
+        <h3>Step 4: Start the Frontend Server</h3>
+        <p>Open another <strong>new terminal</strong> and run:</p>
+        <div class="code-label">PowerShell</div>
+        <div class="code-block">cd d:\Arnav\project\pm-internship-matcher\frontend
+python -m http.server 5500</div>
+        <div class="info-box success">
+            Frontend will be running on <strong>http://localhost:5500</strong>
+        </div>
+
+        <h3>Step 5: Open in Browser</h3>
+        <p>Navigate to: <strong>http://localhost:5500/index.html</strong></p>
+
+        <h3>Complete User Flow</h3>
+        <ol>
+            <li><strong>Register</strong> a new account with your email</li>
+            <li><strong>Login</strong> with your credentials</li>
+            <li><strong>Complete your Profile</strong> — Add field of study, qualification, skills (with proficiency), interests, preferred locations, work mode, and career goals</li>
+            <li><strong>View AI Recommendations</strong> — The engine analyzes your profile and ranks 100+ internships</li>
+            <li><strong>Apply</strong> to internships — Click "Apply" on any recommendation</li>
+            <li><strong>Check Email</strong> — Receive a professional HTML confirmation email</li>
+            <li><strong>Track Applications</strong> — View all applied internships on the Dashboard</li>
+        </ol>
+    </div>
+
+    <!-- 10. API ENDPOINTS -->
+    <div class="section page-break">
+        <h2>10. API Endpoints</h2>
+        <table>
+            <tr><th>Method</th><th>Endpoint</th><th>Description</th><th>Auth</th></tr>
+            <tr><td>POST</td><td>/api/auth/register</td><td>Register new student</td><td>No</td></tr>
+            <tr><td>POST</td><td>/api/auth/login</td><td>Login and get JWT token</td><td>No</td></tr>
+            <tr><td>POST</td><td>/api/auth/forgot-password</td><td>Send OTP to email</td><td>No</td></tr>
+            <tr><td>POST</td><td>/api/auth/reset-password</td><td>Reset password with OTP</td><td>No</td></tr>
+            <tr><td>GET</td><td>/api/students/profile</td><td>Get student profile</td><td>JWT</td></tr>
+            <tr><td>PUT</td><td>/api/students/profile</td><td>Update student profile</td><td>JWT</td></tr>
+            <tr><td>GET</td><td>/api/internships</td><td>Browse all internships</td><td>JWT</td></tr>
+            <tr><td>GET</td><td>/api/internships/{id}</td><td>Get internship details</td><td>JWT</td></tr>
+            <tr><td>GET</td><td>/api/recommendations</td><td>Get AI recommendations</td><td>JWT</td></tr>
+            <tr><td>POST</td><td>/api/applications/{internshipId}</td><td>Apply to internship</td><td>JWT</td></tr>
+            <tr><td>GET</td><td>/api/applications</td><td>Get my applications</td><td>JWT</td></tr>
+        </table>
+        <div class="info-box">
+            <strong>Authentication:</strong> All protected endpoints require a JWT token in the <code>Authorization: Bearer &lt;token&gt;</code> header.
+            Tokens are issued on login and expire after the configured duration.
+        </div>
+    </div>
+
+    <!-- 11. KEY FILES -->
+    <div class="section">
+        <h2>11. Key Files Reference</h2>
+        <table>
+            <tr><th>File</th><th>Purpose</th></tr>
+            <tr><td>RecommendationEngine.java</td><td>Core AI engine — TF-IDF vectorization, cosine similarity, 7-factor scoring, and explanation generation</td></tr>
+            <tr><td>RecommendationResponse.java</td><td>DTO with match score, description, field-of-study score, skill scores, and explanation text</td></tr>
+            <tr><td>MailService.java</td><td>Email service with HTML templates for application confirmation and OTP emails</td></tr>
+            <tr><td>ApplicationService.java</td><td>Business logic for applying — validates, saves, triggers confirmation email</td></tr>
+            <tr><td>SecurityConfig.java</td><td>Spring Security configuration — JWT filter, CORS, public/protected routes</td></tr>
+            <tr><td>application.properties</td><td>All configuration — database, SMTP, JWT secret, server settings</td></tr>
+            <tr><td>seed_data.sql</td><td>Database seed — 100+ internships, 92 skills, skill mappings, interest tags</td></tr>
+            <tr><td>recommendations.html</td><td>Frontend page showing AI recommendations with match bars and apply buttons</td></tr>
+        </table>
+    </div>
+
+    <!-- 12. DATABASE SCHEMA -->
+    <div class="section page-break">
+        <h2>12. Database Schema</h2>
+        <table>
+            <tr><th>Table</th><th>Key Columns</th><th>Description</th></tr>
+            <tr><td>students</td><td>id, name, email, password, field_of_study, qualification, cgpa, bio, work_mode_preference, career_goals</td><td>Registered student profiles</td></tr>
+            <tr><td>internships</td><td>id, title, company_name, sector, description, location, work_mode, duration, stipend_per_month, minimum_qualification, capacity, active</td><td>Available internship listings</td></tr>
+            <tr><td>applications</td><td>id, student_id, internship_id, status, match_score, created_at</td><td>Student applications</td></tr>
+            <tr><td>skills</td><td>id, name, category</td><td>Master skills catalog (92 skills)</td></tr>
+            <tr><td>student_skills</td><td>student_id, skill_id, proficiency</td><td>Student-skill mapping with proficiency level</td></tr>
+            <tr><td>internship_skills</td><td>internship_id, skill_id, importance</td><td>Required skills per internship with importance</td></tr>
+            <tr><td>student_interests</td><td>student_id, interest</td><td>Student interest tags</td></tr>
+            <tr><td>internship_interest_tags</td><td>internship_id, tag</td><td>Internship interest/domain tags</td></tr>
+            <tr><td>student_preferred_locations</td><td>student_id, location</td><td>Preferred work locations</td></tr>
+        </table>
+
+        <h3>Entity Relationships</h3>
+        <div class="arch-box" style="text-align: center; font-size: 10pt;">
+  Student ──┬── 1:N ──→ Applications ←── N:1 ──┬── Internship
+            │                                    │
+            ├── N:M ──→ Student_Skills           ├── 1:N ──→ Internship_Skills
+            │            (proficiency)            │            (importance)
+            ├── 1:N ──→ Student_Interests        ├── 1:N ──→ Internship_Interest_Tags
+            │                                    │
+            └── 1:N ──→ Student_Preferred_        └── 1:N ──→ Skills (master)
+                        Locations
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p><strong>PM Internship Matcher</strong> — AI-Powered Internship Recommendation Platform</p>
+        <p>Developed by Arnav Bhokre | November 2026</p>
+        <p>Built with Spring Boot, MySQL, TF-IDF NLP, and ❤️</p>
+    </div>
+
+</body>
+</html>

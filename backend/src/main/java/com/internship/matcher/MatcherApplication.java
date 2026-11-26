@@ -2,6 +2,7 @@ package com.internship.matcher;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Entry point for the PM Internship Scheme - AI Recommendation Engine backend.
@@ -14,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * and database/internship_schema.sql is provided for manual setup / reference).
  */
 @SpringBootApplication
+@EnableAsync
 public class MatcherApplication {
     public static void main(String[] args) {
         SpringApplication.run(MatcherApplication.class, args);

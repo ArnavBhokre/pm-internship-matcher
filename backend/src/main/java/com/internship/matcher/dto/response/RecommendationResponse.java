@@ -16,16 +16,18 @@ public class RecommendationResponse {
     private String title;
     private String companyName;
     private String sector;
+    private String description;
     private String location;
     private String workMode;
     private String duration;
     private Double stipendPerMonth;
     private String applicationDeadline;
-    private double overallMatchScore;   // 0-100
-    private double skillMatchScore;     // 0-100
-    private double interestMatchScore;  // 0-100
-    private double locationMatchScore;  // 0-100
-    private double qualificationMatchScore; // 0-100
+    private double overallMatchScore;        // 0-100
+    private double skillMatchScore;          // 0-100
+    private double interestMatchScore;       // 0-100 (TF-IDF content similarity)
+    private double locationMatchScore;       // 0-100
+    private double qualificationMatchScore;  // 0-100
+    private double fieldOfStudyMatchScore;   // 0-100
     private List<String> matchedSkills;
     private List<String> missingSkills;
     private String matchExplanation;

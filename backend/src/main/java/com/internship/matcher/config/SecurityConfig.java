@@ -2,6 +2,7 @@ package com.internship.matcher.config;
 
 import com.internship.matcher.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,7 +25,8 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
-    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    @Autowired(required = false)
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
@@ -58,11 +60,15 @@ public class SecurityConfig {
                     .requestMatchers("/actuator/health").permitAll()
                     .anyRequest().authenticated()
             )
-            .authenticationProvider(authenticationProvider())
-            .oauth2Login(oauth2 -> oauth2
+            .authenticationProvider(authenticationProvider());
+
+        if (oAuth2LoginSuccessHandler != null) {
+            http.oauth2Login(oauth2 -> oauth2
                     .successHandler(oAuth2LoginSuccessHandler)
-            )
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            );
+        }
+
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

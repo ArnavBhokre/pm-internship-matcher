@@ -70,11 +70,13 @@
 
         <div class="breakdown">
           ${miniBar("Skills", rec.skillMatchScore)}
-          ${miniBar("Interests", rec.interestMatchScore)}
+          ${miniBar("Content Similarity", rec.interestMatchScore)}
+          ${miniBar("Field of Study", rec.fieldOfStudyMatchScore || 0)}
           ${miniBar("Location", rec.locationMatchScore)}
           ${miniBar("Qualification", rec.qualificationMatchScore)}
         </div>
 
+        ${rec.description ? `<p style="font-size:13px; color:#555; margin:10px 0 6px; line-height:1.5;">${rec.description}</p>` : ""}
         ${rec.matchedSkills && rec.matchedSkills.length ? `<div class="skills-line"><span class="matched">✓ Matched skills:</span> ${rec.matchedSkills.join(", ")}</div>` : ""}
         ${rec.missingSkills && rec.missingSkills.length ? `<div class="skills-line"><span class="missing">✗ Skills to build:</span> ${rec.missingSkills.join(", ")}</div>` : ""}
 

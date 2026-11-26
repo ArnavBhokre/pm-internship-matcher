@@ -19,16 +19,19 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final InternshipService internshipService;
     private final RecommendationEngine recommendationEngine;
+    private final MailService mailService;
 
     // Constructor
     public ApplicationService(
             ApplicationRepository applicationRepository,
             InternshipService internshipService,
-            RecommendationEngine recommendationEngine) {
+            RecommendationEngine recommendationEngine,
+            MailService mailService) {
 
         this.applicationRepository = applicationRepository;
         this.internshipService = internshipService;
         this.recommendationEngine = recommendationEngine;
+        this.mailService = mailService;
     }
 
     // Apply for internship
@@ -64,7 +67,13 @@ public class ApplicationService {
                         .status(ApplicationStatus.APPLIED)
                         .build();
 
-        return applicationRepository.save(application);
+        Application savedApplication = applicationRepository.save(application);
+
+        // Send confirmation email asynchronously
+        mailService.sendApplicationConfirmationEmail(
+                student, internship, scored.getOverallMatchScore());
+
+        return savedApplication;
     }
 
     // Get student's applications
